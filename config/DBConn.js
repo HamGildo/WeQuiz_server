@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 // npm install express mysql --save
 
 // let conn = mysql.createConnection({
