@@ -70,5 +70,44 @@ router.post("/Delete", function (request, response) {
     //conn.end();
 });
 
+// 선택한 지역 미션 목록 확인 라우터
+router.post("/MissionList", function (request, response) {
+    console.log(request.body);
+
+    let mem_id = request.body.mem_id;
+    let location_name = request.body.location_name;
+
+    let sql = `select b.mission_id, mission_type, location_name, keyword, quiz, answer 
+            from mission_bank b join mission_member m 
+            on b.mission_id=m.mission_id 
+            where mem_id =? and location_name=?`
+    conn.query(sql, [mem_id, location_name], function (err, rows) {
+        if (!err) {
+            console.log(rows);
+            
+            let arr = new Array();
+            for(let i = 0; i < rows.length; i++) {
+                let data = new Object();
+                data.mission_id = rows[i].mission_id;
+                data.mission_type = rows[i].mission_type;
+                data.location_name = rows[i].location_name;
+                data.keyword = rows[i].keyword;
+                data.quiz = rows[i].quiz;
+                data.answer = rows[i].answer;
+
+                arr.push(data);
+            }
+            let jsonData = JSON.stringify(arr);
+            console.log(jsonData);
+            response.send(jsonData);
+
+        } else {
+            console.log(err);
+        }
+    });
+    //sql 명령 실행
+    //conn.end();
+});
+
 
 module.exports = router;
