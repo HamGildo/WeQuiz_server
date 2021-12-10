@@ -68,5 +68,33 @@ router.post("/MyBadge", function (request, response) {
     //conn.end();
 });
 
+// 획득한 뱃지 저장 라우터
+router.post("/Insert", function (request, response) {
+    console.log(request.body);
+
+    let mem_id = request.body.mem_id;
+    let location_name = request.body.location_name;
+
+    let sql = "insert into badge_member values(?, ?)";
+    conn.query(sql, [mem_id, location_name], function (err, rows) {
+        if (!err) {
+            console.log(rows);
+            
+            let arr = new Array();
+            let data = new Object();
+            data.status = "200";
+            arr.push(data);
+            let jsonData = JSON.stringify(arr);
+            console.log(jsonData);
+            response.send(jsonData);
+
+        } else {
+            console.log(err);
+        }
+    });
+    //sql 명령 실행
+    //conn.end();
+});
+
 
 module.exports = router;
