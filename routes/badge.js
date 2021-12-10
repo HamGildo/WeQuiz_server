@@ -36,5 +36,37 @@ router.post("/RankInfo", function (request, response) {
     //conn.end();
 });
 
+// 소유 뱃지 확인 라우터
+router.post("/MyBadge", function (request, response) {
+    console.log(request.body);
+    let mem_id = request.body.mem_id;
+
+    let sql = `select l.badge 
+            from badge_member b join location l 
+            on b.location_name=l.location_name 
+            where mem_id = ?`
+    conn.query(sql, [mem_id], function (err, rows) {
+        if (!err) {
+            console.log(rows);
+            
+            let arr = new Array();
+            for(let i = 0; i  <rows.length; i++) {
+                let data = new Object();
+                data.badge = rows[i].badge;
+
+                arr.push(data);
+            }
+            let jsonData = JSON.stringify(arr);
+            console.log(jsonData);
+            response.send(jsonData);
+
+        } else {
+            console.log(err);
+        }
+    });
+    //sql 명령 실행
+    //conn.end();
+});
+
 
 module.exports = router;
