@@ -40,5 +40,35 @@ router.post("/MyMission", function (request, response) {
     //conn.end();
 });
 
+//내 미션 목록 삭제 라우터
+router.post("/Delete", function (request, response) {
+    console.log(request.body);
+
+    let mem_id = request.body.mem_id;
+    let location_name = request.body.location_name;
+
+    let sql = `delete from mission_member 
+            where mem_id=? 
+            and mission_id in (select mission_id from mission_bank where location_name = ?)`
+    conn.query(sql, [mem_id, location_name], function (err, rows) {
+        if (!err) {
+            console.log(rows);
+            
+            let arr = new Array();
+            let data = new Object();
+            data.status = "200";
+            arr.push(data);
+            let jsonData = JSON.stringify(arr);
+            console.log(jsonData);
+            response.send(jsonData);
+
+        } else {
+            console.log(err);
+        }
+    });
+    //sql 명령 실행
+    //conn.end();
+});
+
 
 module.exports = router;
