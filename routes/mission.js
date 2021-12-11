@@ -80,7 +80,7 @@ router.post("/MissionList", function (request, response) {
     let sql = `select b.mission_id, mission_type, location_name, keyword, quiz, answer 
             from mission_bank b join mission_member m 
             on b.mission_id=m.mission_id 
-            where mem_id =? and location_name=?`
+            where mem_id =? and location_name=? and succ=0`
     conn.query(sql, [mem_id, location_name], function (err, rows) {
         if (!err) {
             console.log(rows);
@@ -108,6 +108,9 @@ router.post("/MissionList", function (request, response) {
     //sql 명령 실행
     //conn.end();
 });
+
+
+
 
 
 module.exports = router;
