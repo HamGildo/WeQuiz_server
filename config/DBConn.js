@@ -9,7 +9,7 @@ const mysql = require("mysql2");
 //     database: "wequiz_db"
 // });
 
-let conn = mysql.createConnection({
+let conn = mysql.createPool({
     host: "project-db-stu.ddns.net",
     user: "running",
     password: "211119",
